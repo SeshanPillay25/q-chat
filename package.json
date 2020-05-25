@@ -1,0 +1,16 @@
+{
+  "name": "q-chat",
+  "version": "1.0.0",
+  "description": "A real time chat application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Seshan Pillay",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "mongodb": "^3.5.7",
+    "socket.io": "^1.4.5"
+  }
+}
