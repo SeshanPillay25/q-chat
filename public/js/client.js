@@ -76,8 +76,15 @@ $(function () {
 
   //User logoff
   socket.on("logoff", function (id) {
+    let disconnectedUser = $("li#" + id).text();
     $("li#" + id).remove();
-    localStorage.removeItem("username");
+    $("#publicChat").append(
+      "<p class='disconnected-message'>" + 
+      disconnectedUser + 
+      ' has left the chat' + 
+      "</p>"
+      );
+    // localStorage.removeItem("username");
   });
 
   // Handle chat input
@@ -152,7 +159,7 @@ $(function () {
     $("div#chatWindows div#" + windowID).append(
       "<p>[" +
         data.date +
-        "] <b>" +
+        "] <b class='user-chat-name'>" +
         data.username +
         "</b>: " +
         data.message +
