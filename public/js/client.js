@@ -1,6 +1,6 @@
 $(function () {
   // Connect to socket.io
-  let socket = io.connect("http://localhost:3000");
+  let socket = io.connect("https://q-chat-app.herokuapp.com/");
 
   let domSelectors = {
     usernameField: $("#username"),
