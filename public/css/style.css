@@ -1,3 +1,12 @@
+body {
+  font-family: Product sans;
+  color: #ffffff;
+  background-color: #0a192f;
+}
+
+ul {
+  margin-top: 5px;
+}
 .enter-username {
   width: 500px;
   position: absolute;
@@ -13,6 +22,12 @@
   text-align: center;
 }
 
+.user-chat-name {
+  background-color: white;
+  padding: 5px;
+  border-radius: 20px;
+}
+
 .hidden {
   display: none;
 }
@@ -20,39 +35,48 @@
 .main-inner-section {
   position: relative;
   height: 500px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 10px;
 }
 
 .chatroom {
   width: 100%;
   height: 500px;
-  background: white;
-  border: 1px solid black;
+  border-radius: 10px;
   padding: 10px;
   position: absolute;
   z-index: 1;
   top: 0;
   left: 0;
-  overflow-y: scroll;
+  background: rgb(204, 214, 246);
 }
 
 .chatroom.active {
   z-index: 2;
+  overflow-y: auto;
+  color: #000000;
+}
+
+.disconnected-message {
+  color: red;
 }
 
 .rooms > div {
-  border: 1px solid #888;
-  background: #ccc;
-  color: white;
+  background: rgb(255, 0, 0);
+  border-radius: 40px;
+  font-size: 15px;
+  color: white !important;
   display: inline-block;
+  margin-top: 4px;
   cursor: pointer;
-  padding: 15px;
+  padding: 5px;
   position: relative;
 }
 
 .chat-text {
   width: 850px;
   height: 100px;
-  margin-top: 30px;
+  margin-top: 5px;
 }
 
 .rooms > div.active {
@@ -60,7 +84,11 @@
 }
 
 .user-list li {
-  cursor: pointer;
+  list-style: none;
+  padding: 10px;
+  background-color: #4caf50;
+  width: fit-content;
+  border-radius: 25px;
 }
 
 .rooms > div.new {
