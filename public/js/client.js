@@ -1,6 +1,6 @@
 $(function () {
   // Connect to socket.io
-  let socket = io.connect("https://q-chat-app.herokuapp.com/");
+  let socket = io.connect("http://localhost:3000/");
 
   let domSelectors = {
     usernameField: $("#username"),
@@ -88,10 +88,6 @@ $(function () {
       $("li#" + id).remove();
       $("#publicChat").append(
         "<p class='disconnected-message'>" +
-      "<p class='disconnected-message'>" + 
-        "<p class='disconnected-message'>" +
-          disconnectedUser +
-      disconnectedUser + 
           disconnectedUser +
           " has left the chat" +
           "</p>"
