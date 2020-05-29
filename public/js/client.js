@@ -1,6 +1,6 @@
 $(function () {
   // Connect to socket.io
-  let socket = io.connect("http://localhost:3000");
+  let socket = io.connect("https://q-chat-app.herokuapp.com/");
 
   let domSelectors = {
     usernameField: $("#username"),
@@ -12,9 +12,14 @@ $(function () {
     userListUl: $("#userList ul"),
     activeChatroom: $(".chatroom.active"),
     chatText: $("#chatText"),
-    activeChatWindow: $("#chatWindows div.active"),
+    activeChatWindow: $("div#chatWindows div.active"),
     publicChat: $("#publicChat"),
+    rooms: $("div#rooms"),
+    chatWindows: $("div#chatWindows"),
+    mainRoom: $("div#mainroom"),
   };
+
+  const colors= ['#4285F4','#DB4437','#F4B400','#0F9D58'];
 
   function enterChat(e) {
     e.preventDefault();
@@ -69,29 +74,32 @@ $(function () {
 
   // User logon
   socket.on("logon", function (data) {
+    let color = colors[Math.floor(Math.random() * colors.length)];
     domSelectors.userListUl.append(
       '<li id="' + data.socketID + '">' + data.username + "</li>"
     );
+    $("#" + data.socketID).css('background-color', color);
   });
 
   //User logoff
   socket.on("logoff", function (id) {
     let disconnectedUser = $("li#" + id).text();
-    $("li#" + id).remove();
-    $("#publicChat").append(
-      "<p class='disconnected-message'>" + 
-      disconnectedUser + 
-      ' has left the chat' + 
-      "</p>"
+    if (disconnectedUser.length !== 0) {
+      $("li#" + id).remove();
+      $("#publicChat").append(
+        "<p class='disconnected-message'>" +
+          disconnectedUser +
+          " has left the chat" +
+          "</p>"
       );
-    // localStorage.removeItem("username");
+    }
   });
 
   // Handle chat input
   domSelectors.chatText.keypress(function (e) {
     if (e.which === 13) {
       let message = domSelectors.chatText.val();
-      let windowID = domSelectors.activeChatWindow.attr("id");
+      let windowID = $("div#chatWindows div.active").attr("id");
       let publicChat = true;
       let secondUsername = false;
       let secondUserID;
@@ -100,7 +108,7 @@ $(function () {
       if (message !== "") {
         if (!domSelectors.publicChat.hasClass("active")) {
           publicChat = false;
-          let usersDiv = domSelectors.activeChatroom.attr("id");
+          let usersDiv = $("div.chatroom.active").attr("id");
           let userArray = usersDiv.split("-");
 
           secondUsername = userArray[1];
@@ -185,5 +193,105 @@ $(function () {
           "</p>"
       );
     });
+  });
+
+  // Handle private chat
+  $(document).on("dblclick", "div#userList li", function () {
+    let senderUsername = localStorage.getItem("username");
+    let receiverUsername = $(this).text();
+
+    domSelectors.chatText.focus();
+
+    if ($("div#rooms div#" + receiverUsername).length) {
+      $("div#rooms div#" + receiverUsername).click();
+      return;
+    }
+
+    $("div#rooms > div").removeClass("active");
+    $("div#chatWindows > div").removeClass("active");
+
+    domSelectors.rooms.append(
+      "<div id=" +
+        receiverUsername +
+        " class='active'>" +
+        "<span>x</span>" +
+        receiverUsername +
+        "</div>"
+    );
+    domSelectors.chatWindows.append(
+      "<div id=" +
+        senderUsername +
+        "-" +
+        receiverUsername +
+        " class='chatroom active'></div>"
+    );
+  });
+
+  //Handle second user chat window
+  socket.on("secondUserChatWindow", function (data) {
+    if ($("div#" + data.from).length){
+      return;
+    } 
+
+    $("div#rooms > div").removeClass("active");
+    $("div#chatWindows > div").removeClass("active");
+
+    domSelectors.rooms.append(
+      "<div id=" +
+        data.from +
+        " class='active'>" +
+        "<span>x</span>" +
+        data.from +
+        "</div>"
+    );
+    
+    domSelectors.chatWindows.append(
+      "<div id=" +
+        data.from +
+        "-" +
+        data.secondUsername +
+        " class='chatroom active'></div>"
+    );
+  });
+
+  // Choose room
+  domSelectors.rooms.on("click", "div", function () {
+    $("div#rooms > div").removeClass("active");
+    $("div#chatWindows > div").removeClass("active");
+
+    $(this).addClass("active");
+    $(this).removeClass("new");
+
+    if (domSelectors.mainRoom.hasClass("active")) {
+      domSelectors.publicChat.addClass("active");
+    } else {
+      let firstUsername = localStorage.getItem("username");
+      let secondUsername = $(this).attr("id");
+
+      $("div#chatWindows div#" + firstUsername + "-" + secondUsername).addClass(
+        "active"
+      );
+      $("div#chatWindows div#" + secondUsername + "-" + firstUsername).addClass(
+        "active"
+      );
+    }
+  });
+
+  //Close private chat
+  domSelectors.rooms.on("click", "span", function (e) {
+    e.stopPropagation();
+
+    let firstUsername = localStorage.getItem("username");
+    let secondUsername = $(this).parent().attr("id");
+
+    $("div#chatWindows div#" + firstUsername + "-" + secondUsername).remove();
+    $("div#chatWindows div#" + secondUsername + "-" + firstUsername).remove();
+
+    $(this).parent().remove();
+
+    if ($("div#rooms > div").length == 1) {
+      domSelectors.mainRoom.addClass("active");
+      domSelectors.publicChat.addClass("active");
+    }
   });
 });
