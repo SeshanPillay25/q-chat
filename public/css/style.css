@@ -62,12 +62,13 @@ ul {
 }
 
 .rooms > div {
-  background: rgb(255, 0, 0);
+  background: rgb(135, 135, 135);
   border-radius: 40px;
   font-size: 15px;
   color: white !important;
   display: inline-block;
   margin-top: 4px;
+  margin-left: 8px;
   cursor: pointer;
   padding: 5px;
   position: relative;
@@ -80,15 +81,19 @@ ul {
 }
 
 .rooms > div.active {
-  color: red;
+  color: white !important;
+  background: #9C27B0;
 }
 
 .user-list li {
   list-style: none;
-  padding: 10px;
+  padding: 7px;
   background-color: #4caf50;
   width: fit-content;
+  height: 32px;
+  text-align: center;
   border-radius: 25px;
+  cursor: pointer;
 }
 
 .rooms > div.new {
@@ -98,10 +103,16 @@ ul {
 .rooms > div > span {
   position: absolute;
   z-index: 10;
-  top: 0;
-  right: 5px;
-  color: white !important;
+  border-radius: 10pc;
+  text-align: center;
+  height: 13px;
+  width: 12px;
+  top: -4px;
+  right: -2px;
+  color: red !important;
+  background: white;
   cursor: pointer;
+  font-size: 12px;
 }
 
 .rooms > div > span:hover {
