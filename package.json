@@ -10,7 +10,8 @@
   "license": "GNU General Public License v3.0",
   "dependencies": {
     "express": "^4.13.4",
-    "mongodb": "^3.5.8",
+    "mongodb": "^3.6.4",
     "socket.io": "^4.0.0"
+
   }
 }
