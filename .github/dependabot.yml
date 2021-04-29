@@ -1,0 +1,20 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: mongodb
+    versions:
+    - 3.6.3
+    - 3.6.5
+  - dependency-name: bl
+    versions:
+    - 2.2.1
+  - dependency-name: socket.io
+    versions:
+    - 3.1.0
+    - 3.1.1
