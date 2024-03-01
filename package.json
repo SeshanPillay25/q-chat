@@ -9,7 +9,7 @@
   "author": "Seshan Pillay",
   "license": "GNU General Public License v3.0",
   "dependencies": {
-    "express": "^4.13.4",
+    "express": "^4.18.3",
     "mongodb": "^5.4.0",
     "socket.io": "^4.2.0"
 
